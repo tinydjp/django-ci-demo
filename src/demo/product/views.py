@@ -11,6 +11,7 @@ class ListCompany(generics.ListCreateAPIView):
     serializer_class = CompanySerializer
     queryset = Company.objects.all()
     permission_classes = (AllowAny, )
+    filterset_fields = ['name', ]
 
     def get(self, request):
         return Response(self.queryset.values('id', 'name'))
@@ -28,9 +29,7 @@ class ListProduct(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.select_related('company')
     permission_classes = (AllowAny,)
-
-    def get(self, request, *args, **kwargs):
-        return Response(self.queryset.values())
+    filterset_fields = ['name', 'price']
 
     def post(self, request):
         return self.create(request)
